@@ -7,6 +7,7 @@ import 'gallery_item_model.dart';
 class GalleryImageViewWrapper extends StatefulWidget {
   final Color? backgroundColor;
   final int? initialIndex;
+  final void Function(int)? onPageChanged;
   final List<GalleryItemModel> galleryItems;
   final String? titleGallery;
   final Widget? loadingWidget;
@@ -25,6 +26,7 @@ class GalleryImageViewWrapper extends StatefulWidget {
     required this.titleGallery,
     required this.backgroundColor,
     required this.initialIndex,
+    required this.onPageChanged,
     required this.galleryItems,
     required this.loadingWidget,
     required this.errorWidget,
@@ -51,12 +53,8 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
 
   @override
   void initState() {
-    _currentPage = 0;
-    _controller.addListener(() {
-      setState(() {
-        _currentPage = _controller.page?.toInt() ?? 0;
-      });
-    });
+    _currentPage = widget.initialIndex ?? 0;
+    widget.onPageChanged?.call(_currentPage);
     super.initState();
   }
 
@@ -101,6 +99,12 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
                     itemCount: widget.galleryItems.length,
                     itemBuilder: (context, index) =>
                         _buildImage(widget.galleryItems[index]),
+                    onPageChanged: (index) {
+                      widget.onPageChanged?.call(index);
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
                   ),
                 ),
               ),
