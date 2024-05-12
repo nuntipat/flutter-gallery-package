@@ -9,6 +9,7 @@ import './util.dart';
 
 class GalleryImage extends StatefulWidget {
   final List<String> imageUrls;
+  final void Function(int)? onPageChanged;
   final String? titleGallery;
   final int numOfShowImages;
   final int crossAxisCount;
@@ -33,6 +34,7 @@ class GalleryImage extends StatefulWidget {
   const GalleryImage({
     Key? key,
     required this.imageUrls,
+    this.onPageChanged,
     this.titleGallery,
     this.childAspectRatio = 1,
     this.crossAxisCount = 3,
@@ -150,6 +152,7 @@ class _GalleryImageState extends State<GalleryImage> {
           galleryItems: galleryItems,
           backgroundColor: widget.galleryBackgroundColor,
           initialIndex: indexOfImage,
+          onPageChanged: widget.onPageChanged,
           loadingWidget: widget.loadingWidget,
           errorWidget: widget.errorWidget,
           maxScale: widget.maxScale,
